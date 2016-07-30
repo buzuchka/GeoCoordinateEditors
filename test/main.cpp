@@ -1,7 +1,11 @@
-#include <geocoordinate.h>
+#include <QApplication>
 
-int main()
+#include <degreecoordinateeditor.h>
+
+int main(int argc, char** argv)
 {
-    GeoCoordinate coordinate(10.,10.);
-    return 0;
+    QApplication app(argc, argv);
+    DegreeCoordinateEditor coordinateEditor;
+    coordinateEditor.show();
+    return app.exec();
 }
