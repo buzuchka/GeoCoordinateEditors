@@ -3,6 +3,8 @@
 
 #include <QtCore/qmath.h>
 
+#include <QFontMetrics>
+
 int HowManyChars(int x);
 
 //=========================== AbstractFormat ==================================
@@ -39,11 +41,6 @@ QString Format_DDMMSS::getDisplayValue() const
             arg(m_minutes, m_minutesFieldLength, 'f', 0, QLatin1Char('0')).
             arg(m_seconds, qMax(2, m_secondsFieldLength), 'f',
                 qMax(0, m_edit->getPresicion()), QLatin1Char('0'));;
-}
-
-int Format_DDMMSS::getDisplayWidth() const
-{
-    return 100;
 }
 
 void Format_DDMMSS::setMaxDegrees(int maxDegreesValue)

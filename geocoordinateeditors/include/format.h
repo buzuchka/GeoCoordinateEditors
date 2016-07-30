@@ -14,7 +14,6 @@ public:
     virtual void setValue(double decimalDegrees) = 0;
 
     virtual QString getDisplayValue() const = 0;
-    virtual int getDisplayWidth() const = 0;
 
     virtual void setMaxDegrees(int maxDegreesValue){}
 
@@ -31,7 +30,6 @@ public:
     void setValue(double decimalDegrees);
 
     QString getDisplayValue() const;
-    int getDisplayWidth() const;
 
     void setMaxDegrees(int maxDegreesValue);
 

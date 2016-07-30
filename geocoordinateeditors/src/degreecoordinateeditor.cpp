@@ -42,6 +42,7 @@ int DegreeCoordinateEditor::getPresicion() const
 void DegreeCoordinateEditor::setMaxDegrees(const int maxDegreesValue)
 {
     m_format->setMaxDegrees(maxDegreesValue);
+    updateSize();
 }
 
 void DegreeCoordinateEditor::setFormat(DegreeCoordinateEditor::Format format)
@@ -70,6 +71,7 @@ void DegreeCoordinateEditor::setFormat(DegreeCoordinateEditor::Format format)
 
 void DegreeCoordinateEditor::updateSize()
 {
-    int width = m_format->getDisplayWidth();
+    int width =
+            fontMetrics().width('9') * m_format->getDisplayValue().length() * 0.92;
     setFixedWidth(width);
 }
