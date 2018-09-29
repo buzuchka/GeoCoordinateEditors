@@ -32,9 +32,11 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 
+include(GenerateExportHeader)
+
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmakemodules")
 
-option(BUILD_WITH_QT4 "Build with Qt4 no matter if Qt5 was found" ON)
+option(BUILD_WITH_QT4 "Build with Qt4 no matter if Qt5 was found" OFF)
 
 add_subdirectory(geocoordinateeditors)
 add_subdirectory(test)

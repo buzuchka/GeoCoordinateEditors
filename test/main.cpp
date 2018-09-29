@@ -1,11 +1,11 @@
 #include <QApplication>
 
-#include <degreecoordinateeditor.h>
+#include <Geo/PointEdit.hpp>
 
 int main(int argc, char** argv)
 {
     QApplication app(argc, argv);
-    DegreeCoordinateEditor coordinateEditor;
-    coordinateEditor.show();
+    Geo::PointEdit pointEdit;
+    pointEdit.show();
     return app.exec();
 }
