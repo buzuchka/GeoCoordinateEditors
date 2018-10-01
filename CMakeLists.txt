@@ -1,42 +1,39 @@
-cmake_minimum_required (VERSION 2.8.2)
+project(GeoCoordinateEditors)
 
-cmake_policy(SET CMP0020 NEW)
+file(GLOB_RECURSE INCLUDE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/include/*.h**")
+file(GLOB_RECURSE HEADER_FILES  "${CMAKE_CURRENT_SOURCE_DIR}/src/*.h**")
+file(GLOB_RECURSE SOURCE_FILES  "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
 
-project(geocoordinateeditors_solution CXX)
+if( NOT BUILD_WITH_QT4 )
+  find_package(Qt5Widgets QUIET)
+endif()
 
-if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_GNUCC)
-    message("GNUCXX or GNUCC compiler!")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lgomp -g -fPIC")
-elseif (MSVC)
-    message("MSVC compiler!")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /W3 /MP /openmp /volatile:ms")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W3 /MP /openmp /volatile:ms")
+if (Qt5Widgets_FOUND)
+  include_directories(${Qt5Widgets_INCLUDE_DIRS})
+  set(QTLIBRARIES ${Qt5Widgets_LIBRARIES})
 else()
-    message("Unknown compiler")
+  find_package(Qt4 REQUIRED QtGui)
+  include(${QT_USE_FILE})
+  set(QTLIBRARIES ${QT_LIBRARIES})
 endif()
 
-# отключение Q_ASSERT & qDebug() в Release
-if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_GNUCC)
-    set(CMAKE_CXX_FLAGS_RELEASE "-DQT_NO_DEBUG -DQT_NO_DEBUG_OUTPUT ${CMAKE_CXX_FLAGS_RELEASE}")
-elseif (MSVC)
-    set(CMAKE_CXX_FLAGS_RELEASE "/DQT_NO_DEBUG /DQT_NO_DEBUG_OUTPUT ${CMAKE_CXX_FLAGS_RELEASE}")
-endif()
+add_library(${PROJECT_NAME} STATIC ${INCLUDE_FILES} ${HEADER_FILES} ${SOURCE_FILES})
 
-set(CMAKE_BUILD_WITH_INSTALL_RPATH true)
-set(CMAKE_INSTALL_RPATH ".")
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
+target_include_directories(${PROJECT_NAME}
+PUBLIC
+  "${CMAKE_CURRENT_SOURCE_DIR}/include"
+  ${CMAKE_CURRENT_BINARY_DIR}
+PRIVATE
+  "${CMAKE_CURRENT_SOURCE_DIR}/src"
+)
 
-set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+target_link_libraries(${PROJECT_NAME}
+PRIVATE
+  ${QTLIBRARIES}
+)
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
+set_target_properties(${PROJECT_NAME} PROPERTIES
+  AUTOMOC       ON
+)
 
-include(GenerateExportHeader)
-
-set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmakemodules")
-
-option(BUILD_WITH_QT4 "Build with Qt4 no matter if Qt5 was found" OFF)
-
-add_subdirectory(geocoordinateeditors)
-add_subdirectory(test)
+generate_export_header(${PROJECT_NAME})
